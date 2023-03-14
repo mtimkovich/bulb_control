@@ -1,0 +1,72 @@
+[
+  {
+    "brightness": 19,
+    "color": "FFFEFE",
+    "color_temp": 4856,
+    "is_on": true,
+    "nickname": "Kitchen Bulb 1"
+  },
+  {
+    "brightness": 19,
+    "color": "FFFEFE",
+    "color_temp": 4856,
+    "is_on": true,
+    "nickname": "Kitchen Bulb 3"
+  },
+  {
+    "brightness": 19,
+    "color": "FFFEFE",
+    "color_temp": 4856,
+    "is_on": true,
+    "nickname": "Kitchen Bulb 2"
+  },
+  {
+    "brightness": 19,
+    "color": "FFFEFE",
+    "color_temp": 4856,
+    "is_on": true,
+    "nickname": "Kitchen Bulb 4"
+  },
+  {
+    "brightness": 21,
+    "color": "FFFDE8",
+    "color_temp": 3000,
+    "is_on": false,
+    "nickname": "Hallway Bulb 4"
+  },
+  {
+    "brightness": 20,
+    "color": "FFF0C7",
+    "color_temp": 2700,
+    "is_on": true,
+    "nickname": "Living Room Lamp"
+  },
+  {
+    "brightness": 73,
+    "color": "73ff46",
+    "color_temp": 2700,
+    "is_on": true,
+    "nickname": "Room Bulb"
+  },
+  {
+    "brightness": 20,
+    "color": "FFF0C7",
+    "color_temp": 2700,
+    "is_on": true,
+    "nickname": "TV Bulb"
+  },
+  {
+    "brightness": 21,
+    "color": "FFFDE8",
+    "color_temp": 3000,
+    "is_on": false,
+    "nickname": "Hallway Bulb 2"
+  },
+  {
+    "brightness": 21,
+    "color": "FFFDE8",
+    "color_temp": 3000,
+    "is_on": false,
+    "nickname": "Hallway Bulb 1"
+  }
+]
