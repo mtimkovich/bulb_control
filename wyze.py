@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import json
 from multiprocessing import Pool
 import os
@@ -45,9 +46,15 @@ class Bulb:
             return
 
         self.turn_on()
-        self.client.bulbs.set_brightness(device_mac=self.mac, device_model=self.model, brightness=state['brightness'])
-        self.client.bulbs.set_color(device_mac=self.mac, device_model=self.model, color=state['color'])
-        self.client.bulbs.set_color_temp(device_mac=self.mac, device_model=self.model, color_temp=state['color_temp'])
+        self.client.bulbs.set_color(device_mac=self.mac,
+                                    device_model=self.model,
+                                    color=state['color'])
+        self.client.bulbs.set_color_temp(device_mac=self.mac,
+                                         device_model=self.model,
+                                         color_temp=state['color_temp'])
+        self.client.bulbs.set_brightness(device_mac=self.mac,
+                                         device_model=self.model,
+                                         brightness=state['brightness'])
 
     def to_dict(self):
         return {
@@ -69,8 +76,10 @@ def set_bulb(client):
     return _set_bulb_fn
 
 def save_state(bulbs, filename):
+    # TODO: Check if scene already exists and prompt for override.
     state = []
     for bulb in bulbs:
+        # TODO: Parellelize this
         bulb.get_info()
         state.append(bulb.to_dict())
     with open(os.path.join('scenes', filename), 'w') as fp:

@@ -1,34 +1,34 @@
 [
   {
-    "brightness": 19,
+    "brightness": 20,
     "color": "FFFEFE",
     "color_temp": 4856,
     "is_on": true,
     "nickname": "Kitchen Bulb 1"
   },
   {
-    "brightness": 19,
+    "brightness": 20,
     "color": "FFFEFE",
     "color_temp": 4856,
     "is_on": true,
     "nickname": "Kitchen Bulb 3"
   },
   {
-    "brightness": 19,
+    "brightness": 20,
     "color": "FFFEFE",
     "color_temp": 4856,
     "is_on": true,
     "nickname": "Kitchen Bulb 2"
   },
   {
-    "brightness": 19,
+    "brightness": 20,
     "color": "FFFEFE",
     "color_temp": 4856,
     "is_on": true,
     "nickname": "Kitchen Bulb 4"
   },
   {
-    "brightness": 21,
+    "brightness": 20,
     "color": "FFFDE8",
     "color_temp": 3000,
     "is_on": false,
@@ -56,17 +56,31 @@
     "nickname": "TV Bulb"
   },
   {
-    "brightness": 21,
+    "brightness": 20,
     "color": "FFFDE8",
     "color_temp": 3000,
     "is_on": false,
     "nickname": "Hallway Bulb 2"
   },
   {
-    "brightness": 21,
+    "brightness": 20,
     "color": "FFFDE8",
     "color_temp": 3000,
     "is_on": false,
     "nickname": "Hallway Bulb 1"
+  },
+  {
+    "brightness": 44,
+    "color": "00FF00",
+    "color_temp": 2700,
+    "is_on": true,
+    "nickname": "Entryway Bulb"
+  },
+  {
+    "brightness": 45,
+    "color": "FFFDE8",
+    "color_temp": 2000,
+    "is_on": true,
+    "nickname": "Bed Lamp"
   }
 ]
