@@ -1,3 +1,4 @@
 credentials.json
-token.txt
 env
+__pycache__/
+tokens.json*

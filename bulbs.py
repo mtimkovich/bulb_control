@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-import json
+from functools import partial
 from multiprocessing import Pool
-import os
-import sys
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
+import json
+import os
+import sys
 
 def get_token():
     with open('credentials.json') as fp:
@@ -14,8 +15,12 @@ def get_token():
         password=cred['password']
     )
 
-    with open('token.txt', 'w') as f:
-        f.write(response['access_token'])
+    with open('tokens.json', 'w') as fp:
+        r = {
+            'access_token': response['access_token'],
+            'refresh_token': response['refresh_token']
+        }
+        json.dump(r, fp, sort_keys=True, indent=2)
 
 class Bulb:
     def __init__(self, client, bulb):
@@ -68,14 +73,12 @@ class Bulb:
     def __repr__(self):
         return str(self.to_dict())
 
-def _set_bulb_fn(state):
+def set_bulb(client, state):
     bulb = bulb_from_nickname(client, state['nickname'])
     bulb.set_values(state)
 
-def set_bulb(client):
-    return _set_bulb_fn
-
 def save_state(bulbs, filename):
+    filename += '.json'
     # TODO: Check if scene already exists and prompt for override.
     state = []
     for bulb in bulbs:
@@ -86,16 +89,20 @@ def save_state(bulbs, filename):
         json.dump(state, fp, sort_keys=True, indent=2)
 
 def load_state(client, filename):
+    filename += '.json'
     try:
         with open(os.path.join('scenes', filename)) as fp:
             states = json.load(fp)
     except FileNotFoundError:
-        print(f'No scene named {filename}')
-        return
+        raise KeyError(f'No scene named {filename}')
     with Pool(20) as p:
-        p.map(set_bulb(client), states)
+        p.map(partial(set_bulb, client), states)
     # for state in states:
-    #     (set_bulb(client))(state)
+    #     print(f'Setting bulb {state["nickname"]}')
+    #     bulb = bulb_from_nickname(client, state['nickname'])
+    #     bulb.set_values(state)
+
+        # (set_bulb(client))(state)
 
 def filter_bulbs(client, prefix=''):
     """Return bulbs whose name start with @prefix."""
@@ -117,15 +124,30 @@ if __name__ == '__main__':
         get_token()
         sys.exit()
 
-    with open('token.txt') as f:
-        token = f.read()
+    with open('tokens.json') as f:
+        data = json.load(f)
+        token = data['access_token']
+        refresh_token = data['refresh_token']
 
-    client = Client(token=token)
+    client = Client(token=token, refresh_token=refresh_token)
+    response = client.refresh_token()
+    print(response)
+
+
+    # TODO: Expand this to automatically refresh the token.
+    try:
+        client.user_get_info()
+    except WyzeApiError as e:
+        print(e)
+        # if 'refresh the token' in str(e):
+        #     print(e)
+        # sys.exit(1)
+    sys.exit(1)
 
     try:
-        filename = f'{sys.argv[2]}.json'
-
+        # pass
         if sys.argv[1] == 'save':
+            print('hello')
             bulbs = filter_bulbs(client)
             save_state(bulbs, filename)
         elif sys.argv[1] == 'load':
