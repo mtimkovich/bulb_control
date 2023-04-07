@@ -7,7 +7,14 @@ import json
 import os
 import sys
 
-def get_token():
+def create_client():
+    if os.path.exists('tokens.json'):
+        with open('tokens.json') as f:
+            data = json.load(f)
+            token = data['access_token']
+            refresh_token = data['refresh_token']
+        return Client(token=token, refresh_token=refresh_token)
+
     with open('credentials.json') as fp:
         cred = json.load(fp)
     response = Client().login(
@@ -15,12 +22,7 @@ def get_token():
         password=cred['password']
     )
 
-    with open('tokens.json', 'w') as fp:
-        r = {
-            'access_token': response['access_token'],
-            'refresh_token': response['refresh_token']
-        }
-        json.dump(r, fp, sort_keys=True, indent=2)
+    return Client(token=response['access_token'])
 
 class Bulb:
     def __init__(self, client, bulb):
@@ -73,10 +75,6 @@ class Bulb:
     def __repr__(self):
         return str(self.to_dict())
 
-def set_bulb(client, state):
-    bulb = bulb_from_nickname(client, state['nickname'])
-    bulb.set_values(state)
-
 def save_state(bulbs, filename):
     filename += '.json'
     # TODO: Check if scene already exists and prompt for override.
@@ -88,6 +86,10 @@ def save_state(bulbs, filename):
     with open(os.path.join('scenes', filename), 'w') as fp:
         json.dump(state, fp, sort_keys=True, indent=2)
 
+def set_bulb(client, state):
+    bulb = bulb_from_nickname(client, state['nickname'])
+    bulb.set_values(state)
+
 def load_state(client, filename):
     filename += '.json'
     try:
@@ -97,12 +99,6 @@ def load_state(client, filename):
         raise KeyError(f'No scene named {filename}')
     with Pool(20) as p:
         p.map(partial(set_bulb, client), states)
-    # for state in states:
-    #     print(f'Setting bulb {state["nickname"]}')
-    #     bulb = bulb_from_nickname(client, state['nickname'])
-    #     bulb.set_values(state)
-
-        # (set_bulb(client))(state)
 
 def filter_bulbs(client, prefix=''):
     """Return bulbs whose name start with @prefix."""
@@ -117,35 +113,12 @@ def bulb_from_nickname(client, name):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print('auth, load, or save')
+        print('load or save')
         sys.exit(1)
 
-    if sys.argv[1] == 'auth':
-        get_token()
-        sys.exit()
-
-    with open('tokens.json') as f:
-        data = json.load(f)
-        token = data['access_token']
-        refresh_token = data['refresh_token']
-
-    client = Client(token=token, refresh_token=refresh_token)
-    response = client.refresh_token()
-    print(response)
-
-
-    # TODO: Expand this to automatically refresh the token.
-    try:
-        client.user_get_info()
-    except WyzeApiError as e:
-        print(e)
-        # if 'refresh the token' in str(e):
-        #     print(e)
-        # sys.exit(1)
-    sys.exit(1)
+    client = create_client()
 
     try:
-        # pass
         if sys.argv[1] == 'save':
             print('hello')
             bulbs = filter_bulbs(client)
