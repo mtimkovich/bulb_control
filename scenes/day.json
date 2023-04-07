@@ -75,5 +75,11 @@
     "color_temp": 2700,
     "is_on": true,
     "nickname": "Entryway Bulb"
+  },
+  {
+    "brightness": 100,
+    "color_name": "cool white",
+    "is_on": true,
+    "nickname": "Bed Lamp"
   }
 ]

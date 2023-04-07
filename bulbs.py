@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from colors import colors
 from functools import partial
 from multiprocessing import Pool
 from wyze_sdk import Client
@@ -53,12 +54,20 @@ class Bulb:
             return
 
         self.turn_on()
+
+        if 'color_name' in state:
+            color = colors[state['color_name']]['color']
+            color_temp = colors[state['color_name']]['color_temp']
+        else:
+            color = state['color']
+            color_temp = state['color_temp']
+
         self.client.bulbs.set_color(device_mac=self.mac,
                                     device_model=self.model,
-                                    color=state['color'])
+                                    color=color)
         self.client.bulbs.set_color_temp(device_mac=self.mac,
                                          device_model=self.model,
-                                         color_temp=state['color_temp'])
+                                         color_temp=color_temp)
         self.client.bulbs.set_brightness(device_mac=self.mac,
                                          device_model=self.model,
                                          brightness=state['brightness'])
