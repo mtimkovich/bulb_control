@@ -2,7 +2,7 @@ import bulbs
 import json
 import logging
 import os.path
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_caching import Cache
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
@@ -59,9 +59,8 @@ def create_app():
     get_token(cache)
 
     @app.route('/')
-    def hello_world():
-        # TODO: load the bootstrap page
-        return 'hello, world'
+    def index():
+        return render_template('index.html')
 
     @app.route('/load', methods=['POST'])
     def load():
