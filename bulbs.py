@@ -5,6 +5,7 @@ from multiprocessing import Pool
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
 import json
+import logging
 import os
 import sys
 
@@ -24,6 +25,29 @@ def create_client():
     )
 
     return Client(token=response['access_token'])
+
+def write_tokens(client, filename):
+    with open('tokens.json', 'w') as f:
+        data = {
+            'access_token': client._token,
+            'refresh_token': client._refresh_token
+        }
+
+        json.dump(data, f)
+
+def update_token(client):
+    """Return if the token was updated."""
+    try:
+        client.user_get_info()
+    except WyzeApiError as e:
+        if 'refresh the token' in str(e):
+            logging.info('refreshing auth token')
+            client.refresh_token()
+            write_tokens(client, 'tokens.json')
+            return True
+        else:
+            raise e
+    return False
 
 class Bulb:
     def __init__(self, client, bulb):
@@ -88,19 +112,20 @@ def confirm(message):
     r = input(f'{message} [Y/n] ').lower()
     return r == 'y' or r == 'yes'
 
+def info_dict(bulb):
+    bulb.get_info()
+    return bulb.to_dict()
+
 def save_state(bulbs, filename):
     filename += '.json'
     scene_file = os.path.join('scenes', filename)
 
-    if os.path.exists(scene_file):
-        if not confirm(f'{filename} already exists, override?'):
+    if (os.path.exists(scene_file) and
+        not confirm(f'{filename} already exists, override?')):
             return
 
-    state = []
-    for bulb in bulbs:
-        # TODO: Parellelize this
-        bulb.get_info()
-        state.append(bulb.to_dict())
+    with Pool(20) as p:
+        state = p.map(info_dict, bulbs)
     with open(scene_file, 'w') as fp:
         json.dump(state, fp, sort_keys=True, indent=2)
 
@@ -135,6 +160,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     client = create_client()
+    update_token(client)
     filename = sys.argv[2]
 
     try:

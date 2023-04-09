@@ -7,15 +7,6 @@ from flask_caching import Cache
 from wyze_sdk import Client
 from wyze_sdk.errors import WyzeApiError
 
-def write_tokens(client, filename):
-    with open('tokens.json', 'w') as f:
-        data = {
-            'access_token': client._token,
-            'refresh_token': client._refresh_token
-        }
-
-        json.dump(data, f)
-
 def get_client(cache):
     client = cache.get('client')
 
@@ -25,7 +16,7 @@ def get_client(cache):
         if 'refresh the token' in str(e):
             logging.info('refreshing auth token')
             client.refresh_token()
-            write_tokens(client, 'tokens.json')
+            bulbs.write_tokens(client, 'tokens.json')
             cache.set('client', client)
         else:
             raise e
