@@ -84,15 +84,24 @@ class Bulb:
     def __repr__(self):
         return str(self.to_dict())
 
+def confirm(message):
+    r = input(f'{message} [Y/n] ').lower()
+    return r == 'y' or r == 'yes'
+
 def save_state(bulbs, filename):
     filename += '.json'
-    # TODO: Check if scene already exists and prompt for override.
+    scene_file = os.path.join('scenes', filename)
+
+    if os.path.exists(scene_file):
+        if not confirm(f'{filename} already exists, override?'):
+            return
+
     state = []
     for bulb in bulbs:
         # TODO: Parellelize this
         bulb.get_info()
         state.append(bulb.to_dict())
-    with open(os.path.join('scenes', filename), 'w') as fp:
+    with open(scene_file, 'w') as fp:
         json.dump(state, fp, sort_keys=True, indent=2)
 
 def set_bulb(client, state):
@@ -121,15 +130,15 @@ def bulb_from_nickname(client, name):
             return Bulb(client, bulb)
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         print('load or save')
         sys.exit(1)
 
     client = create_client()
+    filename = sys.argv[2]
 
     try:
         if sys.argv[1] == 'save':
-            print('hello')
             bulbs = filter_bulbs(client)
             save_state(bulbs, filename)
         elif sys.argv[1] == 'load':
