@@ -1,7 +1,7 @@
 function flash(type, message) {
   const element = $(`.alert-${type}`);
   element.text(message);
-  element.slideDown().delay(5000).slideUp();
+  element.fadeIn().delay(5000).fadeOut();
 }
 
 $(':button').click((e) => {
