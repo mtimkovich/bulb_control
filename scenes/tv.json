@@ -1,27 +1,27 @@
 [
   {
-    "brightness": 11,
+    "brightness": 1,
     "color": "ff4500",
     "color_temp": 2000,
     "is_on": true,
     "nickname": "Kitchen Bulb 1"
   },
   {
-    "brightness": 11,
+    "brightness": 1,
     "color": "ff4500",
     "color_temp": 2000,
     "is_on": true,
     "nickname": "Kitchen Bulb 3"
   },
   {
-    "brightness": 11,
+    "brightness": 1,
     "color": "ff4500",
     "color_temp": 2000,
     "is_on": true,
     "nickname": "Kitchen Bulb 2"
   },
   {
-    "brightness": 11,
+    "brightness": 1,
     "color": "ff4500",
     "color_temp": 2000,
     "is_on": true,
