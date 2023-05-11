@@ -24,9 +24,10 @@ def create_client():
         password=cred['password']
     )
 
-    return Client(token=response['access_token'])
+    return Client(token=response['access_token'],
+                  refresh_token=response['refresh_token'])
 
-def write_tokens(client, filename):
+def write_tokens(client):
     with open('tokens.json', 'w') as f:
         data = {
             'access_token': client._token,
@@ -43,7 +44,7 @@ def update_token(client):
         if 'refresh the token' in str(e):
             logging.info('refreshing auth token')
             client.refresh_token()
-            write_tokens(client, 'tokens.json')
+            write_tokens(client)
             return True
         else:
             raise e

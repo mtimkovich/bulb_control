@@ -15,8 +15,9 @@ def get_client(cache):
     except WyzeApiError as e:
         if 'refresh the token' in str(e):
             logging.info('refreshing auth token')
+            client = bulbs.create_client()
             client.refresh_token()
-            bulbs.write_tokens(client, 'tokens.json')
+            bulbs.write_tokens(client)
             cache.set('client', client)
         else:
             raise e
@@ -30,7 +31,9 @@ def create_app():
     app = Flask(__name__)
     cache.init_app(app)
 
-    cache.set('client', bulbs.create_client())
+    client = bulbs.create_client()
+    bulbs.write_tokens(client)
+    cache.set('client', client)
 
     @app.route('/')
     def index():
