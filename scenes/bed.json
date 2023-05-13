@@ -80,7 +80,7 @@
     "brightness": 45,
     "color": "FFFDE8",
     "color_temp": 2000,
-    "is_on": true,
+    "is_on": false,
     "nickname": "Bed Lamp"
   }
 ]
