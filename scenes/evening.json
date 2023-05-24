@@ -35,7 +35,7 @@
     "nickname": "Hallway Bulb 4"
   },
   {
-    "brightness": 20,
+    "brightness": 30,
     "color": "FFF0C7",
     "color_temp": 2700,
     "is_on": true,
@@ -49,7 +49,7 @@
     "nickname": "Room Bulb"
   },
   {
-    "brightness": 20,
+    "brightness": 30,
     "color": "FFF0C7",
     "color_temp": 2700,
     "is_on": true,
