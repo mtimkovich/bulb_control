@@ -42,13 +42,6 @@
     "nickname": "Living Room Lamp"
   },
   {
-    "brightness": 73,
-    "color": "73FF46",
-    "color_temp": 2700,
-    "is_on": true,
-    "nickname": "Room Bulb"
-  },
-  {
     "brightness": 1,
     "color": "FFF0C7",
     "color_temp": 2700,
@@ -77,10 +70,10 @@
     "nickname": "Entryway Bulb"
   },
   {
-    "brightness": 45,
+    "brightness": 1,
     "color": "FFFDE8",
     "color_temp": 2000,
-    "is_on": false,
+    "is_on": true,
     "nickname": "Bed Lamp"
   }
 ]
